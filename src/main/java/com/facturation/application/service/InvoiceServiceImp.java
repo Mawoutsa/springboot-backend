@@ -69,7 +69,13 @@ public class InvoiceServiceImp implements InvoiceService {
         Invoice invoice = new Invoice();
         invoice.setReference(dto.getReference());
         invoice.setInvoiceDate(dto.getInvoiceDate());
-        invoice.setStatus(dto.getStatus());
+
+        if (dto.getStatus() == null) {
+            invoice.setStatus(InvoiceStatus.EN_ATTENTE); 
+        } else {
+            invoice.setStatus(dto.getStatus());
+        }
+                
         invoice.setCompany(company);
         invoice.setCustomer(customer);
         invoice.setDeleted(false);
@@ -167,5 +173,15 @@ public class InvoiceServiceImp implements InvoiceService {
 
     public Page<Invoice> read(Pageable pageable) {
         return invoiceRepository.findAll(pageable); // Utilise le repository pour renvoyer une page d'invoices
+    }
+
+    @Override
+    public Page<Invoice> searchByStatus(InvoiceStatus status, Pageable pageable) {
+        return invoiceRepository.findAllByStatus(status, pageable);
+    }
+
+    @Override
+    public Page<Invoice> searchByCustomerNameAndReference(String customerName, String reference, Pageable pageable) {
+        return invoiceRepository.findAllByCustomerNameAndReference(customerName, reference, pageable);
     }
 }

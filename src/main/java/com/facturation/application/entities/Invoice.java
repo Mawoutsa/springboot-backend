@@ -29,7 +29,7 @@ public class Invoice {
     @Column(name = "deleted", nullable = false)
     private  boolean deleted = false;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private InvoiceStatus status = InvoiceStatus.EN_ATTENTE; // Par défaut à "EN_ATTENTE"
 
 

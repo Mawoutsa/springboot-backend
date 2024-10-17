@@ -37,7 +37,7 @@ public class Customer {
     @Column(length = 255)
     private  String email;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "invoice_id")
     private Set<Invoice> invoices = new HashSet<>();
 

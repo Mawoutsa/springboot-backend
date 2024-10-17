@@ -27,7 +27,7 @@ public  class CreateInvoiceDTO {
     @Schema(description = "Date de l'invoice")
     private Date invoiceDate;
 
-    private InvoiceStatus status; // Ajouter le statut
+    private InvoiceStatus status = InvoiceStatus.EN_ATTENTE; 
 
     private boolean deleted;
 

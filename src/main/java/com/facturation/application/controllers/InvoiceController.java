@@ -6,6 +6,7 @@ import com.facturation.application.DTO.invoices.InvoiceDTO;
 import com.facturation.application.DTO.invoices.UpdateInvoiceDTO;
 import com.facturation.application.criteria.InvoiceCriteria;
 import com.facturation.application.entities.Invoice;
+import com.facturation.application.entities.InvoiceStatus;
 import com.facturation.application.mapper.InvoiceMapper;
 import com.facturation.application.service.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -100,4 +101,22 @@ public class InvoiceController {
         return invoicePage.map(inv -> invoiceMapper.toDTO(inv));
     }
 
+    @GetMapping("/search/status")
+    public Page<Invoice> searchByStatus(
+            @RequestParam InvoiceStatus status, 
+            @RequestParam(defaultValue = "0") int page, 
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return invoiceService.searchByStatus(status, PageRequest.of(page, size));
+    }
+
+    @GetMapping("/search/customer-reference")
+    public Page<Invoice> searchInvoices(
+            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) String reference,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return invoiceService.searchByCustomerNameAndReference(customerName, reference, PageRequest.of(page, size));
+    }
 }
