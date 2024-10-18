@@ -16,6 +16,8 @@ public interface InvoiceService {
     Invoice update(Long id, Invoice invoiceDTO);
 
     Invoice delete(Long id);
+    
+    Invoice getInvoiceById(Long id);
 
     Page<Invoice> search(InvoiceCriteria criteria, int page, int size);
 

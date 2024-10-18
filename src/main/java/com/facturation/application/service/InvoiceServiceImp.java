@@ -184,4 +184,9 @@ public class InvoiceServiceImp implements InvoiceService {
     public Page<Invoice> searchByCustomerNameAndReference(String customerName, String reference, Pageable pageable) {
         return invoiceRepository.findAllByCustomerNameAndReference(customerName, reference, pageable);
     }
+
+    @Override
+    public Invoice getInvoiceById(Long id) {
+        return invoiceRepository.findById(id).orElseThrow(() -> new RuntimeException("Invoice not found with id: " + id));
+    }
 }

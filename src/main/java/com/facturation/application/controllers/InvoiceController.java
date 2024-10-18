@@ -123,4 +123,12 @@ public class InvoiceController {
         Page<Invoice> invoicePage = invoiceService.searchByCustomerNameAndReference(customerName, reference, PageRequest.of(page,size));
         return invoicePage.map(invoiceMapper::toDTO);
     }
+
+    
+    @GetMapping("/{id}")
+    @Operation(summary = "Récupérer un invoice par son id")
+    public InvoiceDTO getInvoiceById(@PathVariable Long id) {
+        Invoice invoice = invoiceService.getInvoiceById(id); 
+        return invoiceMapper.toDTO(invoice);
+    }
 }
