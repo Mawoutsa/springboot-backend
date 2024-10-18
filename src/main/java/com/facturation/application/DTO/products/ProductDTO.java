@@ -1,24 +1,22 @@
 package com.facturation.application.DTO.products;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
 
-    @NotNull
-    @Schema(description = "l'id du product")
-    private Long id;
+    private Long id; // No need for @NotNull here, as it might be null for new products
 
     @NotNull
-    @Schema(description = "reference du  product")
+    @Schema(description = "reference du  product")
     private String productReference;
 
     @NotNull
@@ -27,19 +25,20 @@ public class ProductDTO {
 
     @NotNull
     @Schema(description = "prix unitaire du product")
-    private Double unitPrice;
-
-    @Transient
-    private Double totalAmount;
+    private BigDecimal unitPrice;
 
     @NotNull
     @Schema(description = "quantite procduct")
-    private Double quantity;
+    private BigDecimal quantity; 
+
+    private BigDecimal totalAmount; 
 
     // Prix total calculé
-    public Double getTotalAmount() {
-        return unitPrice * quantity;
+    public BigDecimal getTotalAmount() {
+        if (unitPrice != null && quantity != null) {
+            return unitPrice.multiply(quantity);
+        } else {
+            return BigDecimal.ZERO; 
+        }
     }
-
-
 }

@@ -35,19 +35,16 @@ public class ProductServiceImpl implements ProductService{
     public Page<Product> read(Pageable pageable) {
         return productDao.findAll(pageable); // Utilise le repository pour renvoyer une page d'invoices
     }
-
     @Override
     public Product update(Long id, Product product) {
         return productDao.findById(id)
-                .map(p->
-                {
-            p.setProductReference(product.getProductReference());
-            p.setDescription(product.getDescription());
-            p.setUnitPrice(product.getUnitPrice());
-            p.setQuantity(product.getQuantity());
-            p.setTotalAmount(product.getTotalAmount());
-            return productDao.save(p);
-        }).orElseThrow(() -> new RuntimeException("Product non trouver !"));
+                .map(p -> {
+                    p.setProductReference(product.getProductReference());
+                    p.setDescription(product.getDescription());
+                    p.setUnitPrice(product.getUnitPrice());
+                    p.setQuantity(product.getQuantity()); 
+                    return productDao.save(p);
+                }).orElseThrow(() -> new RuntimeException("Product non trouver !"));
     }
 
     @Override

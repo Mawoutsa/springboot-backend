@@ -6,6 +6,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -37,8 +39,8 @@ public class Customer {
     @Column(length = 255)
     private  String email;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-    @JoinColumn(name = "invoice_id")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Invoice> invoices = new HashSet<>();
 
 }

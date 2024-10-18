@@ -3,6 +3,7 @@ package com.facturation.application.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -24,10 +25,10 @@ public class Product {
     private String description;
 
     @Column(length = 255)
-    private Double unitPrice;
+    private BigDecimal  unitPrice;
 
     @Column(length = 255)
-    private Double quantity;
+    private BigDecimal  quantity;
 
     @Transient
     private Double totalAmount;
@@ -37,9 +38,10 @@ public class Product {
     private Invoice invoice;
 
     // Méthode pour calculer le prix total
-    public Double getTotalAmount() {
-        return unitPrice * quantity;
+    public BigDecimal getTotalAmount() {
+        return this.unitPrice.multiply(this.quantity); // Calculation with BigDecimal
     }
+    
     @Column(name = "deleted")
     private  boolean deleted = false;
 

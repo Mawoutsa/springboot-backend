@@ -10,6 +10,7 @@ import com.facturation.application.entities.InvoiceStatus;
 import com.facturation.application.mapper.InvoiceMapper;
 import com.facturation.application.service.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -102,21 +103,24 @@ public class InvoiceController {
     }
 
     @GetMapping("/search/status")
-    public Page<Invoice> searchByStatus(
+    public Page<InvoiceDTO> searchByStatus(
             @RequestParam InvoiceStatus status, 
             @RequestParam(defaultValue = "0") int page, 
             @RequestParam(defaultValue = "10") int size
     ) {
-        return invoiceService.searchByStatus(status, PageRequest.of(page, size));
+        Page<Invoice> invoices = invoiceService.searchByStatus(status, PageRequest.of(page, size));
+        return invoices.map(invoiceMapper::toDTO); 
     }
 
+
     @GetMapping("/search/customer-reference")
-    public Page<Invoice> searchInvoices(
+    public Page<InvoiceDTO> searchInvoices(
             @RequestParam(required = false) String customerName,
             @RequestParam(required = false) String reference,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return invoiceService.searchByCustomerNameAndReference(customerName, reference, PageRequest.of(page, size));
+        Page<Invoice> invoicePage = invoiceService.searchByCustomerNameAndReference(customerName, reference, PageRequest.of(page,size));
+        return invoicePage.map(invoiceMapper::toDTO);
     }
 }

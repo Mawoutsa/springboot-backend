@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,23 +84,22 @@ public class InvoiceServiceImp implements InvoiceService {
         invoice = invoiceRepository.save(invoice);
 
 
-        List<Product> products = new ArrayList<>();
+    
+    List<Product> products = new ArrayList<>();
 
-        for (CreateProductDTO productDTO : dto.getProducts()) {
+    for (CreateProductDTO productDTO : dto.getProducts()) {
+        Product product = new Product();
+        product.setProductReference(productDTO.getProductReference());
+        product.setDescription(productDTO.getDescription());
+        product.setUnitPrice(BigDecimal.valueOf(productDTO.getUnitPrice())); // Convert to BigDecimal
+        product.setQuantity(BigDecimal.valueOf(productDTO.getQuantity())); // Convert to BigDecimal
+        product.setInvoice(invoice);
+        productRepository.save(product);
+        products.add(product);
+    }
 
-            Product product = new Product();
-            product.setProductReference(productDTO.getProductReference());
-            product.setDescription(productDTO.getDescription());
-            product.setUnitPrice(productDTO.getUnitPrice());
-            product.setQuantity(productDTO.getQuantity());
-            product.setTotalAmount(productDTO.getTotalAmount());
-            product.setInvoice(invoice);
-            productRepository.save(product);
-
-            products.add(product);
-        }
-        invoice.setProducts(products);
-        return invoiceRepository.save(invoice);
+    invoice.setProducts(products);
+    return invoiceRepository.save(invoice);
     }
 
         @Override

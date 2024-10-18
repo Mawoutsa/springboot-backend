@@ -42,7 +42,7 @@ public class Invoice {
     private  Company company;
 
 
-    @OneToMany(mappedBy = "invoice", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invoice",fetch = FetchType.EAGER)
     private List<Product> products;
 
 }
